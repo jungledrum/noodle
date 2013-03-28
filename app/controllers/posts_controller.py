@@ -1,3 +1,4 @@
+from hummingbird.controller_base import *
 
 class PostsController(ControllerBase):
     
@@ -16,7 +17,9 @@ class PostsController(ControllerBase):
     post = Post(title, author, content)
     post.save()
 
-    return redirect('/')
+    response = redirect('/')
+
+    return response
 
   def show(self):
     id = path_params[':id']

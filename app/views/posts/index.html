@@ -6,6 +6,11 @@
   
 </head>
 <body>
+  {% if session.has_key('username') %}
+  <h3>Welcome,{{ session['username']['value'] }}<a href="/logout">Exit</a></h3>
+  {% else %}
+  <h3><a href="/login">Login</a></h3>
+  {% endif %}
   <table border="0">
     <tr>
       <th>ID</th>
@@ -20,9 +25,12 @@
       <td><a href="posts/{{ post['id'] }}">{{ post.title }}</a></td>
       <td>{{ post.author }}</td>
       <td><a href="posts/{{ post['id'] }}/edit">编辑</a></td>
-      <td><a href="posts/{{ post['id'] }}">删除</a></td>
+      <td><a href="posts/{{ post['id'] }}" method="delete">删除</a></td>
     </tr>
     {% endfor %}
   </table>
+    <script src="js/jquery-1.9.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

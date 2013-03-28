@@ -1,7 +1,6 @@
 from render import *
 from request import *
-from app.models.post import *
-from app.models.comment import *
+from app.models import *
 
 class ControllerBase:
   pass

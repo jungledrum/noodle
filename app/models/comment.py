@@ -1,4 +1,4 @@
-from model_base import *
+from hummingbird.model_base import *
 
 class Comment(Base, ModelBase):
   __tablename__ = 'comments'

@@ -1,4 +1,4 @@
-from model_base import *
+from hummingbird.model_base import *
 
 class Post(Base, ModelBase):
   __tablename__ = 'posts'
