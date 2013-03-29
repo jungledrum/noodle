@@ -1,4 +1,4 @@
-from hummingbird.model_base import *
+from noodle.model_base import *
 
 class User(Base, ModelBase):
     __tablename__ = 'users'

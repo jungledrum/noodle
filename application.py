@@ -1,4 +1,4 @@
-from hummingbird.application import *
+from noodle.application import *
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop

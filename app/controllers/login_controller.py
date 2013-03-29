@@ -1,4 +1,4 @@
-from hummingbird.controller_base import *
+from noodle.controller_base import *
 
 class LoginController(ControllerBase):
 
