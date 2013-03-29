@@ -4,7 +4,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
 Base = declarative_base()
-engine = create_engine('mysql://root:123456@localhost/storm?charset=utf8')
+execfile('config/database.py')
+engine = create_engine('mysql://%s:%s@%s/%s?charset=utf8' % (DB_INFO['username'], DB_INFO['password'], DB_INFO['host'], DB_INFO['db']))
 Session = sessionmaker(bind=engine)
 db = Session()
 
@@ -31,4 +32,8 @@ class ModelBase():
             setattr(self, k, v)
             db.add(self)
             db.commit()
+
+    def destroy(self):
+        db.delete(self)
+        db.commit()
 

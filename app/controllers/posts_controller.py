@@ -45,6 +45,7 @@ class PostsController(ControllerBase):
     return redirect('/')
 
   def destroy(self):
-    body = '---destroy---'
-    response = Response(body, mimetype='text/html')
-    return response
+    id = path_params[':id']
+    post = Post.find(id)
+    post.destroy()
+    return redirect('/')

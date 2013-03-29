@@ -38,8 +38,6 @@ class App:
         m.update(SECRET_KEY)
         m.update(v)
         session_value = m.hexdigest() + '?' + v
-        print m.hexdigest()
-        print session_value
         response.set_cookie(session_key, session_value)
 
     return response
@@ -48,10 +46,12 @@ class App:
     request = request_stack.top.request
     path = request.path
     verb = request.method
+    if request.form.has_key('_method'):
+      verb = request.form['_method']
 
     route = find_route(path, verb)
     request.route = route
-    print '+'*100
+    print '-'*100
     print route
 
     if route is None:
@@ -72,7 +72,6 @@ class App:
 
         # from posts_controller import *
         module = __import__(package, globals(), locals(), [''], -1)
-        print module
         c = getattr(module, controller)()
         method = getattr(c, action)
 
