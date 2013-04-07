@@ -11,6 +11,9 @@
   {% else %}
   <h3><a href="/login">Login</a></h3>
   {% endif %}
+  {% if session.has_key('flash') %}
+  {{ get_flash() }}
+  {% endif %}
   <a href="/posts/new">新建</a>
   <table border="0" width="100%">
     <tr align="left" style="background-color:grey">

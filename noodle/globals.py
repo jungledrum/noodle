@@ -1,22 +1,19 @@
-from werkzeug.local import LocalStack, LocalProxy, Local
+from werkzeug.local import LocalStack, LocalProxy
 from functools import partial
-from werkzeug.wrappers import Response
 
-def _get_object(name):
-  request = request_stack.top.request
-  return getattr(request, name)
 
 def _params():
-  request = request_stack.top.request
-  return request.form
+    request = _request_stack.top.request
+    return dict(request.form.items() + request.args.items() + request.path_params.items())
 
-request_stack = LocalStack()
+_request_stack = LocalStack()
+_app_stack = LocalStack()
 
 params = LocalProxy(_params)
-path_params = LocalProxy(lambda :request_stack.top.request.path_params)
 
-request = LocalProxy(lambda :request_stack.top.request)
-cookie = LocalProxy(lambda :request_stack.top.cookie)
-session = LocalProxy(lambda :request_stack.top.session)
+current_app = LocalProxy(lambda :_app_stack.top)
+request = LocalProxy(lambda :_request_stack.top.request)
+cookie = LocalProxy(lambda :_request_stack.top.cookie)
+session = LocalProxy(lambda :_request_stack.top.session)
 
 SECRET_KEY = 'flkdsjalkfjdslafjklajf'

@@ -1,3 +1,4 @@
+# -*- coding:utf8 -*-
 from noodle.controller_base import *
 
 class LoginController(ControllerBase):
@@ -14,7 +15,8 @@ class LoginController(ControllerBase):
             session['username'] = user.username
             return redirect('/')
         else:
-            return render_text("no user %s" % username)
+            session['flash'] = 'login fail...'
+            return redirect('/login')
 
     def logout(self):
         session['username'] = None

@@ -3,4 +3,6 @@ from request import *
 from app.models import *
 
 class ControllerBase:
-  pass
+
+    before_filter = None
+    after_filter = None

@@ -9,6 +9,11 @@
 <body>
   <div class="container-fluid">
     <div class="row-fluid">
+      {% if session.has_key('flash') %}
+      <div class="alert alert-error">
+        {{ get_flash() }}
+      </div>
+      {% endif %}
       <div class="span8">
         <!--Sidebar content-->
         <form action="login" method="post" class="form-horizontal">

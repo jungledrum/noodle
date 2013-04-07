@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import os.path
-routes = [] 
-config_file = os.path.abspath('config/route.py')
+from globals import current_app
+import os
 
 class Rule:
     def __init__(self, path, verb, action):
@@ -21,7 +20,7 @@ class Rule:
 
 def rule(path, verb, action):
     r = Rule(path, verb, action)
-    routes.append(r)
+    current_app.routes.append(r)
 
 def resources(res):
     rule('/%s' % res, 'get', '%s#index' % res)
@@ -32,11 +31,7 @@ def resources(res):
     rule('/%s/:id' % res, 'post', '%s#update' % res)
     rule('/%s/:id' % res, 'delete', '%s#destroy' % res)
 
-
-# 从用户的路由配置文件中加载路由config/route.py
-execfile(config_file)
-
-def find_route(path, verb):
+def find_route(routes, path, verb):
     if path[len(path)-1] == '/' and len(path) > 1:
         path = path[0:len(path)-1]
 
@@ -54,7 +49,7 @@ def find_route(path, verb):
             continue
         for i,v in enumerate(r.path.split('/')):
             if v.startswith(':'):
-                params[v] = path_list[i]
+                params[v[1:]] = path_list[i]
             elif v == path_list[i]:
                 continue
             else:
@@ -78,7 +73,7 @@ def find_route(path, verb):
         return {'static':True, 'file':file_path, 'mimetype':mimetype}
 
 
-def print_routes():
+def print_routes(routes):
     for r in routes:
         print_route(r)
 
