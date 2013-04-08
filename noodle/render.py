@@ -1,19 +1,27 @@
+# -*- coding:utf8 -*-
 import os
-from jinja2 import Template, Environment, FileSystemLoader
 from globals import *
 from wrappers import Response
 import json
+from mako.template import Template
+from mako.lookup import TemplateLookup
 
-def render(template_name, params={}):
-    template_path = os.path.join(os.path.dirname(__file__), '../app/views/') + request.route['resource']
-    env = Environment(loader=FileSystemLoader(template_path),
-        autoescape=True)
-    env.globals['session'] = session
-    env.globals['cookie'] = cookie
-    env.globals.update(get_flash = get_flash)
 
-    template = env.get_template(template_name)
-    body = template.render(params)
+def render(template_name, **params):
+    params['session'] = session
+    params['cookie'] = cookie
+    params['get_flash'] = get_flash
+    params['button'] = button
+    params['get_csrf_token'] = get_csrf_token
+
+    template_path = os.path.abspath('app/views/' + request.route['resource']) + '/'
+    view_path = os.path.abspath('app/views/')
+    lookup = TemplateLookup([template_path, view_path])
+    
+    template = Template(filename=template_path+template_name, input_encoding='utf-8',
+                        output_encoding='utf-8', default_filters=['h'], lookup=lookup, uri='/')
+    body = template.render(**params)
+
     return Response(body, mimetype='text/html')
 
 
@@ -31,4 +39,11 @@ def get_flash():
     f = session.get('flash', '')
     session['flash'] = None
     return f
+
+def button(value="button"):
+    s = u'<button>%s</button>' % value.decode('utf8')
+    return s
+
+def get_csrf_token():
+    return session['csrf_token']
 

@@ -9,14 +9,15 @@
 <body>
   <div class="container-fluid">
     <div class="row-fluid">
-      {% if session.has_key('flash') %}
+      % if session.has_key('flash') :
       <div class="alert alert-error">
-        {{ get_flash() }}
+        ${ get_flash() }
       </div>
-      {% endif %}
+      % endif
       <div class="span8">
         <!--Sidebar content-->
         <form action="login" method="post" class="form-horizontal">
+                <input type="hidden" name="csrf_token" value="${get_csrf_token()}"/>
           <div class="control-group">
             <label class="control-label" for="inputEmail">username</label>
             <div class="controls">

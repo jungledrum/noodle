@@ -16,10 +16,10 @@ class PostsController(ControllerBase):
         
     def index(self):
         posts = Post.all()
-        return render('index.html', {'posts':posts})
+        return render('index.html', posts=posts)
 
     def new(self):
-        return render('new.html', {})
+        return render('new.html')
     
     def create(self):
         title = params['title']
@@ -37,16 +37,16 @@ class PostsController(ControllerBase):
         id = params['id']
         post = Post.find(id)
 
-        return render('show.html', {'post':post})
+        return render('show.html', post=post)
 
     def edit(self):
         id = params['id']
         post = Post.find(id)
         
-        return render('edit.html', {'post':post})
+        return render('edit.html', post=post)
 
     def update(self):
-        id = params[':id']
+        id = params['id']
         title = params['title']
         author = params['author']
         content = params['content']
@@ -57,7 +57,7 @@ class PostsController(ControllerBase):
         return redirect('/')
 
     def destroy(self):
-        id = path_params[':id']
+        id = params['id']
         post = Post.find(id)
         post.destroy()
         return redirect('/')

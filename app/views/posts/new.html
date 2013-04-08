@@ -1,16 +1,9 @@
-<html>
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<%inherit file="layout.html" />
 
-  <title>Show</title>
-  
-</head>
-<body>
   <form action="/posts" method="post">
+    <input type="hidden" name="csrf_token" value="${get_csrf_token()}"/>
     title:<input type="text" name="title"/><br>
     author:<input type="text" name="author"/><br>
     <textarea name="content" rows="8" cols="40"></textarea>
     <input type="submit"/>
   </form>
-</body>
-</html>

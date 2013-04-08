@@ -5,6 +5,7 @@ from ctx import RequestContext
 from globals import _app_stack, _request_stack, cookie, session, SECRET_KEY
 import os.path
 import md5
+import random
 
 class App:
     def __init__(self):
@@ -12,14 +13,35 @@ class App:
         self.routes = []
         self._init_route()
 
+
     def _init_route(self):
         # 从用户的路由配置文件中加载路由config/route.py
         config_file = os.path.abspath('config/route.py')
         execfile(config_file)
         # print_routes(self.routes)
 
+    def check_csrf_token(self):
+        request = _request_stack.top.request
+        token = request.headers.get('X-CSRF-Token', None) or request.form.get('csrf_token', None)
+        if request.method != 'GET':
+            if not session.has_key('csrf_token') or token == None:
+                self.write_csrf_token()
+                return False
+            if session['csrf_token'] != token:
+                self.write_csrf_token()
+                return False
+            else:
+                self.write_csrf_token()
+                return True
+
+    def write_csrf_token(self):
+        token = str(random.random())
+        session['csrf_token'] = token
+
     def process_response(self, response):
         cookie.output(response)
+
+        
 
         # session
         for k,v in session.items():
@@ -37,6 +59,9 @@ class App:
         return response
 
     def dispatch_request(self):
+        if self.check_csrf_token() == False:
+            return Response('csrf', mimetype='text/html')
+
         request = _request_stack.top.request
         path = request.path
         verb = request.method
