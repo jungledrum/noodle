@@ -3,7 +3,9 @@ from globals import _request_stack, SECRET_KEY
 from wrappers import Cookie, Request
 
 class RequestContext:
-    def __init__(self, environ):
+    def __init__(self, environ, app, db):
+        self.app = app
+        self.db = db
         self.request = Request(environ)
         self.cookie = Cookie()
         self.session = dict()
@@ -39,4 +41,5 @@ class RequestContext:
         return self
 
     def __exit__(self, exc_type, exc_value, tb):
+        self.db.remove()
         self.pop()

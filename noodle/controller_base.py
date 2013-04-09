@@ -1,5 +1,5 @@
 from render import *
-from request import *
+from wrappers import *
 from app.models import *
 
 class ControllerBase:

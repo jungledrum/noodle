@@ -1,13 +1,9 @@
-from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker, relationship, backref
+from globals import db
 
 Base = declarative_base()
-execfile('config/database.py')
-engine = create_engine('mysql://%s:%s@%s/%s?charset=utf8' % (DB_INFO['username'], DB_INFO['password'], DB_INFO['host'], DB_INFO['db']))
-Session = sessionmaker(bind=engine)
-db = Session()
 
 class ModelBase():
 

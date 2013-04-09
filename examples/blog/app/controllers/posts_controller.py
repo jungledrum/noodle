@@ -1,8 +1,9 @@
 from noodle.controller_base import *
+from datetime import datetime
 
 class PostsController(ControllerBase):
 
-    before_filter = {'check'}
+    # before_filter = {'check'}
     after_filter = {'log'}
 
     def check(self):
